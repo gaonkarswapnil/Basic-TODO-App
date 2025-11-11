@@ -1,0 +1,11 @@
+<resources>
+    <string name="add">ADD</string>
+    <string name="edit">EDIT</string>
+    <string name="delete">DELETE</string>
+    <string name = "delete_msg">Sure want to Delete</string>
+    <string name="delete_task">Delete Task</string>
+    <string name ="yes">Yes</string>
+    <string name="no">No</string>
+    <string name="update_add">Add or Update</string>
+    <string name="enter_task">Enter your task</string>
+</resources>
