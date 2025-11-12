@@ -10,7 +10,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import org.jetbrains.compose.resources.stringResource
-import org.kmp.todo.AppLogs
+import org.kmp.todo.core.AppLogs
 import todoapp.composeapp.generated.resources.Res
 import todoapp.composeapp.generated.resources.delete_msg
 import todoapp.composeapp.generated.resources.delete_task

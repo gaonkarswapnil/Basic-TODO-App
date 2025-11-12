@@ -7,4 +7,5 @@ sealed class TaskIntent {
     data class insertTask(val taskName: String): TaskIntent()
     data class editTask(val id: Int, val taskName: String): TaskIntent()
     data class deleteTask(val id: Int): TaskIntent()
+    data class fetchSingleTask(val id: Int): TaskIntent()
 }

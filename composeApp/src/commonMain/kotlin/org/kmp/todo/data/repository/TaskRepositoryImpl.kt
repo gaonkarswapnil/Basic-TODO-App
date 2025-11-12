@@ -4,7 +4,7 @@ import org.kmp.todo.data.dto.TaskResponse
 import org.kmp.todo.domain.model.Task
 import org.kmp.todo.domain.repository.TaskRepository
 
-class TaskRepositoryImpl : TaskRepository {
+object TaskRepositoryImpl : TaskRepository {
 
     private var tasks: MutableList<TaskResponse> = mutableListOf(
         TaskResponse(1, "Task1"),
@@ -22,6 +22,12 @@ class TaskRepositoryImpl : TaskRepository {
 
     override suspend fun getAllTasks(): List<Task> {
         return updatedTask.toList()
+    }
+
+    override suspend fun getSingleTask(id: Int): Task {
+        return updatedTask.first {
+            it.id == id
+        }
     }
 
     override suspend fun insertTask(taskName: String) {

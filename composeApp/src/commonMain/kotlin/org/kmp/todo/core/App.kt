@@ -32,7 +32,7 @@ fun App() {
                 .fillMaxSize(),
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
-            ListOfTasksScreen()
+            AppHost()
         }
     }
 }

@@ -28,6 +28,7 @@ import org.kmp.todo.data.repository.TaskRepositoryImpl
 import org.kmp.todo.domain.usecase.DeleteTaskUseCase
 import org.kmp.todo.domain.usecase.EditTaskUseCase
 import org.kmp.todo.domain.usecase.GetAllTasksUseCase
+import org.kmp.todo.domain.usecase.GetSingleTaskUseCase
 import org.kmp.todo.domain.usecase.InsertTaskUseCase
 import org.kmp.todo.presentation.intent.TaskIntent
 import org.kmp.todo.presentation.view.component.AddTask
@@ -40,16 +41,20 @@ import todoapp.composeapp.generated.resources.add_icon
 
 
 @Composable
-fun ListOfTasksScreen() {
-    val taskRepositoryImpl = TaskRepositoryImpl()
-    val taskViewModel: TaskViewModel = viewModel(
-        factory = TaskViewModelFactory(
-            GetAllTasksUseCase(taskRepositoryImpl),
-            EditTaskUseCase(taskRepositoryImpl),
-            DeleteTaskUseCase(taskRepositoryImpl),
-            InsertTaskUseCase(taskRepositoryImpl)
-        )
-    )
+fun ListOfTasksScreen(
+    onTaskClicked: (id: Int) -> Unit,
+    taskViewModel: TaskViewModel
+) {
+//    val taskRepositoryImpl = TaskRepositoryImpl()
+//    val taskViewModel: TaskViewModel = viewModel(
+//        factory = TaskViewModelFactory(
+//            GetAllTasksUseCase(taskRepositoryImpl),
+//            GetSingleTaskUseCase(taskRepositoryImpl),
+//            EditTaskUseCase(taskRepositoryImpl),
+//            DeleteTaskUseCase(taskRepositoryImpl),
+//            InsertTaskUseCase(taskRepositoryImpl)
+//        )
+//    )
 
     var alertForInsert by remember {
         mutableStateOf(false)
@@ -88,12 +93,7 @@ fun ListOfTasksScreen() {
                     items(data.listOfTask) { task ->
                         SingleTask(
                             task,
-                            {
-                                taskViewModel.processIntent(TaskIntent.editTask(task.id, it))
-                            },
-                            {
-                                taskViewModel.processIntent(TaskIntent.deleteTask(task.id))
-                            }
+                            navigate ={ onTaskClicked(task.id) }
                         )
                     }
                 }

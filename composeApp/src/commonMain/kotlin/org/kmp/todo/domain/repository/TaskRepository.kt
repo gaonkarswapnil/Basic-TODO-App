@@ -6,6 +6,8 @@ interface TaskRepository {
 
     suspend fun getAllTasks(): List<Task>
 
+    suspend fun getSingleTask(id: Int): Task
+
     suspend fun insertTask(task: String)
 
     suspend fun edit(id: Int, task: String)
