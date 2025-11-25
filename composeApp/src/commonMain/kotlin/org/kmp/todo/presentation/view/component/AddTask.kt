@@ -9,28 +9,36 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.sqlite.driver.bundled.OpenFlag
 import org.jetbrains.compose.resources.stringResource
 import org.kmp.todo.core.AppLogs
+import org.kmp.todo.domain.model.Task
 import todoapp.composeapp.generated.resources.Res
+import todoapp.composeapp.generated.resources.add
 import todoapp.composeapp.generated.resources.delete_msg
 import todoapp.composeapp.generated.resources.delete_task
 import todoapp.composeapp.generated.resources.enter_task
 import todoapp.composeapp.generated.resources.no
-import todoapp.composeapp.generated.resources.update_add
+import todoapp.composeapp.generated.resources.update
 import todoapp.composeapp.generated.resources.yes
 
 @Composable
 fun AddTask(
     taskName: String = "",
+    flag: Boolean = false,
     onDismissRequest: () -> Unit = {},
-    onConfirmation : (text: String) -> Unit = {}
+    onConfirmation : (task: Task) -> Unit = {}
 ){
     var text by remember { mutableStateOf(taskName) }
 
     AppLogs.info(taskName)
     AlertDialog(
         title = {
-            Text(text = stringResource(Res.string.update_add))
+            Text(text = if(flag){
+                stringResource(Res.string.update)
+            }else {
+                stringResource(Res.string.add)
+            })
         },
         text = {
             TextField(
@@ -45,7 +53,7 @@ fun AddTask(
         confirmButton = {
             TextButton(
                 onClick = {
-                    onConfirmation(text)
+                    onConfirmation( Task(0, text))
                 }
             ) {
                 Text(stringResource(Res.string.yes))

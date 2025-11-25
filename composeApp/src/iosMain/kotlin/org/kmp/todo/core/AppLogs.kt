@@ -1,7 +1,9 @@
 package org.kmp.todo.core
 
+import platform.Foundation.NSLog
+
 actual object AppLogs {
     actual fun info(message: String) {
-        print(message)
+        NSLog("Logs[INFO]",message)
     }
 }

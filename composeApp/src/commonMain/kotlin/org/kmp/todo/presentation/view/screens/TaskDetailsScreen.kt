@@ -36,6 +36,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import org.kmp.todo.core.AppLogs
 import org.kmp.todo.data.repository.TaskRepositoryImpl
+import org.kmp.todo.domain.model.Task
 import org.kmp.todo.domain.usecase.DeleteTaskUseCase
 import org.kmp.todo.domain.usecase.EditTaskUseCase
 import org.kmp.todo.domain.usecase.GetAllTasksUseCase
@@ -63,7 +64,7 @@ fun TaskDetailsScreen(
 
     val data by taskViewModel.singleTaskState.collectAsState()
 
-    val taskName: MutableState<String?> = remember { mutableStateOf(null) }
+    val taskName: MutableState<Task?> = remember { mutableStateOf(null) }
 
     LaunchedEffect(id) {
         taskViewModel.processIntent(TaskIntent.fetchSingleTask(id))
@@ -98,7 +99,7 @@ fun TaskDetailsScreen(
                 verticalArrangement = Arrangement.spacedBy(8.dp)
             ) {
                 Text(
-                    text = taskName.value ?: data.task?.taskName.orEmpty(),
+                    text = taskName.value?.taskName ?: data.task?.taskName.orEmpty(),
                     fontSize = 20.sp,
                     fontWeight = FontWeight.SemiBold,
                     color = Color(0xFF222222)
@@ -147,9 +148,11 @@ fun TaskDetailsScreen(
         DeleteTask(
             onConfirmation = {
                 AppLogs.info("Confirmation of delete")
-                alertForDelete = false
-                taskViewModel.processIntent(TaskIntent.deleteTask(data.task!!.id))
-                navController.popBackStack()
+                data.task?.let {
+                    alertForDelete = false
+                    taskViewModel.processIntent(TaskIntent.deleteTask(it))
+                    navController.popBackStack()
+                }
             },
             onDismissRequest = {
                 alertForDelete = false
@@ -159,14 +162,15 @@ fun TaskDetailsScreen(
 
     if (alertForEdit) {
         AddTask(
-            taskName = taskName.value ?: data.task?.taskName.orEmpty(),
+            taskName = taskName.value?.taskName ?: data.task?.taskName.orEmpty(),
+            flag = true,
             onDismissRequest = {
                 alertForEdit = false
             },
             onConfirmation = {
                 alertForEdit = false
                 taskName.value = it
-                taskViewModel.processIntent(TaskIntent.editTask(data.task!!.id, it))
+                taskViewModel.processIntent(TaskIntent.editTask(it))
             }
         )
     }

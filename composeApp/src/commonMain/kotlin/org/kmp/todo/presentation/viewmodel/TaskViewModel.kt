@@ -34,9 +34,9 @@ class TaskViewModel constructor(
         viewModelScope.launch {
             when (intent) {
                 TaskIntent.fetchAllTask -> fetchAllTask()
-                is TaskIntent.insertTask -> insertTask(intent.taskName)
-                is TaskIntent.editTask -> editTask(intent.id, intent.taskName)
-                is TaskIntent.deleteTask -> deleteTask(intent.id)
+                is TaskIntent.insertTask -> insertTask(intent.task)
+                is TaskIntent.editTask -> editTask(intent.task)
+                is TaskIntent.deleteTask -> deleteTask(intent.task)
                 is TaskIntent.fetchSingleTask -> fetchSingleTask(intent.id)
             }
         }
@@ -53,10 +53,11 @@ class TaskViewModel constructor(
         }
     }
 
-    suspend fun insertTask(taskName: String){
+    suspend fun insertTask(task: Task){
         _listOfTaskState.value = TaskState(loading = true, error = null)
+        AppLogs.info("Inserting Task ViewModel : ${task.taskName} === ${task.id}")
         try {
-            insertTaskUseCase(taskName)
+            insertTaskUseCase(task)
             fetchAllTask()
 
         } catch (e: Exception) {
@@ -64,21 +65,21 @@ class TaskViewModel constructor(
         }
     }
 
-    suspend fun editTask(id: Int, taskName: String) {
+    suspend fun editTask(task: Task) {
         _listOfTaskState.value = TaskState(loading = true, error = null)
         try {
-            editTaskUseCase(id, taskName)
+            editTaskUseCase(task)
             fetchAllTask()
         } catch (e: Exception) {
             _listOfTaskState.value = TaskState(loading = false, error = e.message)
         }
     }
 
-    suspend fun deleteTask(id: Int) {
+    suspend fun deleteTask(task: Task) {
         _listOfTaskState.value = TaskState(loading = true, error = null)
         try {
-            deleteTaskUseCase(id)
-            AppLogs.info("DELETED : $id")
+            deleteTaskUseCase(task)
+            AppLogs.info("DELETED : ${task.id}")
             fetchAllTask()
         } catch (e: Exception) {
             _listOfTaskState.value = TaskState(loading = false, error = e.message)

@@ -24,6 +24,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
+import org.kmp.todo.core.AppLogs
 import org.kmp.todo.data.repository.TaskRepositoryImpl
 import org.kmp.todo.domain.usecase.DeleteTaskUseCase
 import org.kmp.todo.domain.usecase.EditTaskUseCase
@@ -119,9 +120,10 @@ fun ListOfTasksScreen(
                     onDismissRequest = {
                         alertForInsert = false
                     },
-                    onConfirmation = {
-                        taskViewModel.processIntent(TaskIntent.insertTask(it))
+                    onConfirmation = {task ->
+                        taskViewModel.processIntent(TaskIntent.insertTask(task))
                         alertForInsert = false
+
                     }
                 )
             }

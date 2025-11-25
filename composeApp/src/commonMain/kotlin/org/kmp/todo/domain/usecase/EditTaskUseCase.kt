@@ -7,8 +7,8 @@ class EditTaskUseCase constructor(
     private val taskRepository: TaskRepository
 ) {
 
-    suspend operator fun invoke(id: Int, taskName: String){
-        taskRepository.edit(id, taskName)
+    suspend operator fun invoke(task: Task){
+        taskRepository.edit(task)
     }
 
 }
